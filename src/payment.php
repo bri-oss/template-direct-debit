@@ -17,8 +17,8 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
 $getAccessToken = new GetAccessToken();
 
@@ -30,13 +30,50 @@ $getAccessToken = new GetAccessToken();
 
 $directDebit = new DirectDebit();
 
+$partnerReferenceNo = '';
+$url = '';
+$type = ''; // PAY_RETURN/PAY_NOTIFY
+$isDeepLink = ''; // Y/N
+$value = '';
+$currency = '';
+$chargeToken = '';
+$bankCardToken = '';
+$otpStatus = '';
+$settlementAccount = '';
+$merchantTrxId = '';
+$remarks = '';
+
+$body = [
+  'partnerReferenceNo' => $partnerReferenceNo,
+  'urlParam' => [
+    (object) [
+      'url' => $url,
+      'type' => $type,
+      'isDeepLink' => $isDeepLink
+    ]
+  ],
+  'amount' => (object) [
+    'value' => $value,
+    'currency' => $currency,
+  ],
+  'chargeToken' => $chargeToken,
+  'bankCardToken' => $bankCardToken,
+  'additionalInfo' => (object) [
+    'otpStatus' => $otpStatus,
+    'settlementAccount' => $settlementAccount,
+    'merchantTrxId' => $merchantTrxId,
+    'remarks' => $remarks
+  ]
+];
+
 $response = $directDebit->payment(
   $clientSecret = $clientSecret, 
   $partnerId = $partnerId, 
   $baseUrl,
   $accessToken, 
   $channelId,
-  $timestamp
+  $timestamp,
+  $body
 );
 
 echo $response;

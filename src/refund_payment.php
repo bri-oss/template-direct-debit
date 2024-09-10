@@ -17,7 +17,7 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'feedloop'; //partner id
+$partnerId = 'cM8GIPvoEpzLaHQfvL1e9g'; //partner id
 $channelId = '12345'; // channel id
 
 $getAccessToken = new GetAccessToken();
@@ -30,13 +30,38 @@ $getAccessToken = new GetAccessToken();
 
 $directDebit = new DirectDebit();
 
+$originalPartnerReferenceNo = '';
+$originalReferenceNo = '';
+$partnerRefundNo = '';
+$value = '';
+$currency = '';
+$reason = '';
+$callbackUrl = '';
+$settlementAccount = '';
+
+$body = [
+  'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
+  'originalReferenceNo' => $originalReferenceNo,
+  'partnerRefundNo' => $partnerRefundNo,
+  'refundAmount' => (object) [
+    'value' => $value,
+    'currency' => $currency
+  ],
+  'reason' => $reason,
+  'additionalInfo' => (object) [
+    'callbackUrl' => $callbackUrl,
+    'settlementAccount' => $settlementAccount
+  ]
+];
+
 $response = $directDebit->refundPayment(
   $clientSecret = $clientSecret, 
   $partnerId = $partnerId,
   $baseUrl,
   $accessToken, 
   $channelId,
-  $timestamp
+  $timestamp,
+  $body
 );
 
 echo $response;

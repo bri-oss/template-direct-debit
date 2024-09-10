@@ -18,8 +18,8 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
 $getAccessToken = new GetAccessToken();
 
@@ -31,13 +31,25 @@ $getAccessToken = new GetAccessToken();
 
 $directDebit = new DirectDebit();
 
+$originalPartnerReferenceNo = '';
+$originalReferenceNo = '';
+$serviceCode = '';
+
+$body = [
+  'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
+  'originalReferenceNo' => $originalReferenceNo,
+  'serviceCode' => $serviceCode
+];
+
+
 $response = $directDebit->paymentStatus(
   $clientSecret = $clientSecret, 
   $partnerId = $partnerId,
   $baseUrl,
   $accessToken, 
   $channelId,
-  $timestamp
+  $timestamp,
+  $body
 );
 
 echo $response;
