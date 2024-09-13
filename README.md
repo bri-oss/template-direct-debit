@@ -35,7 +35,7 @@ module:
 1. fill partnerId, eg: 'cM8GIPvoEpzLaHQfvL1e9g'
 2. fill channelId, eg: '12345'
 3. fill partnerReferenceNo is Transaction identification on service provider system example '426306015178'
-4. fill url is URL for callback, example https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation
+4. fill url is URL for callback, example 'https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation'
 5. fill type, type is URL Type PAY_RETURN/PAY_NOTIFY
 6. fill isDeepLink, to define is url deep link or not with Y/N
 7. fill value, Transaction amount that will be paid using this payment method If it’s IDR then value. includes 2 decimal digits. e.g. IDR 10.000,- will be placed with 10000.00
