@@ -44,6 +44,8 @@ $settlementAccount = (new GenerateRandomString())->generate(15); // '02060100010
 $merchantTrxId = (new GenerateRandomString())->generate(10); //'0206010001';
 $remarks = 'test';
 
+file_put_contents('partnerReferenceNo.txt', $partnerReferenceNo);
+
 $body = [
   'partnerReferenceNo' => $partnerReferenceNo,
   'urlParam' => [
@@ -78,3 +80,7 @@ $response = $directDebit->payment(
 );
 
 echo $response;
+
+$jsonPost = json_decode($response, true);
+
+file_put_contents('referenceNo.txt', $jsonPost['referenceNo']);
