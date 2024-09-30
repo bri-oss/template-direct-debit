@@ -1,10 +1,13 @@
-# Template-informasi-rekening-php
+# Template Direct Debit
 
-This is a simple template for Virtual Account SNAP BI using PHP.
+This is a simple template for Direct Debit SNAP BI using PHP.
 
 module:
-- [Virtual Account - Briva Online](https://developers.bri.co.id/en/snap-bi/apidocs-virtual-account-briva-online-snap-bi)
-- [Virtual Account - Briva WS](https://developers.bri.co.id/en/snap-bi/apidocs-virtual-account-briva-ws-snap-bi)
+- [Direct Debit - Payment](https://developers.bri.co.id/en/snap-bi/apidocs-direct-debit-snap-bi)
+- [Direct Debit - Payment Status](https://developers.bri.co.id/en/snap-bi/apidocs-direct-debit-snap-bi)
+- [Direct Debit - Refund Payment](https://developers.bri.co.id/en/snap-bi/apidocs-direct-debit-snap-bi)
+- [Direct Debit - Payment Notify](https://developers.bri.co.id/en/snap-bi/apidocs-direct-debit-snap-bi)
+- [Direct Debit - Refund Notify](https://developers.bri.co.id/en/snap-bi/apidocs-direct-debit-snap-bi)
 
 ## List of Content
 - [Instalasi](#instalasi)
@@ -13,6 +16,8 @@ module:
   - [Payment](#payment)
   - [Payment Status](#payment-status)
   - [Refund Payment](#refund-payment)
+  - [Payment Notify](#payment-notify)
+  - [Refund Notify](#refund-notify)
 - [Caution](#caution)
 - [Disclaimer](#disclaimer)
 
@@ -72,6 +77,20 @@ module:
 9. fill callbackUrl, eg: 'https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation'
 10. fill settlementAccount, eg: '020601000109305'
 11. run command `php src/refund_payment.php serve`
+```
+
+### Payment Notify
+```bash
+1. fill variable $clientId, eg: 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un'
+2. fill variable $clientSecret, eg: 'super_secret'
+3. run command `php src/payment_notify.php serve`
+```
+
+### Refund Notify
+```bash
+1. fill variable $clientId, eg: 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un'
+2. fill variable $clientSecret, eg: 'super_secret'
+3. run command `php src/refund_notify.php serve`
 ```
 
 ## How to get CONSUMER_KEY and CONSUMER_SECRET
