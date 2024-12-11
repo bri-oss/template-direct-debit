@@ -5,8 +5,12 @@ use BRI\Util\GetAccessToken;
 
 require __DIR__ . '/../../briapi-sdk/autoload.php';
 
+require __DIR__ . '/../vendor/autoload.php';
+Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
+
 $clientId = 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un';
 $clientSecret = 'super_secret';
+$privateKey = $_ENV['PRIVATE_KEY'];
 
 // url path values
 $baseUrl = 'https://api.bridex.qore.page/mock'; //base url
@@ -15,8 +19,8 @@ $getAccessToken = new GetAccessToken();
 
 $accessToken = $getAccessToken->getMockOutbound(
   $clientId,
-  $clientSecret,
-  $baseUrl
+  $baseUrl,
+  $privateKey
 );
 
 
