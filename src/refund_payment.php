@@ -17,8 +17,8 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'cM8GIPvoEpzLaHQfvL1e9g'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
 if (!file_exists('partnerReferenceNo.txt') || !file_exists('referenceNo.txt')) {
   echo "Please payment direct debit first";
@@ -38,11 +38,11 @@ $directDebit = new DirectDebit();
 $originalPartnerReferenceNo = trim(file_get_contents('partnerReferenceNo.txt'));
 $originalReferenceNo = trim(file_get_contents('referenceNo.txt'));
 $partnerRefundNo = trim(file_get_contents('partnerReferenceNo.txt'));
-$value = '10000.00';
-$currency = 'IDR';
-$reason = 'test';
-$callbackUrl = 'https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation';
-$settlementAccount = '020601000109305';
+$value = '';
+$currency = '';
+$reason = '';
+$callbackUrl = '';
+$settlementAccount = '';
 
 $body = [
   'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
@@ -60,8 +60,8 @@ $body = [
 ];
 
 $response = $directDebit->refundPayment(
-  $clientSecret = $clientSecret, 
-  $partnerId = $partnerId,
+  $clientSecret, 
+  $partnerId,
   $baseUrl,
   $accessToken, 
   $channelId,

@@ -8,8 +8,8 @@ use BRI\Util\GetAccessToken;
 require __DIR__ . '/../vendor/autoload.php';
 Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
 
-$clientId = 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un';
-$clientSecret = 'super_secret';
+$clientId = '';
+$clientSecret = '';
 $privateKey = $_ENV['PRIVATE_KEY'];
 
 // url path values
