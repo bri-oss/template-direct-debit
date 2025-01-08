@@ -1,35 +1,28 @@
 <?php
 
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\DirectDebit\DirectDebit;
-use BRI\Util\GetAccessToken;
-
-require __DIR__ . '/../vendor/autoload.php';
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-$clientId = '';
-$clientSecret = '';
-$privateKey = $_ENV['PRIVATE_KEY'];
+require 'utils.php';
 
 // url path values
 $baseUrl = 'https://api.bridex.qore.page/mock'; //base url
 
-$getAccessToken = new GetAccessToken();
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$accessToken = $getAccessToken->getMockOutbound(
-  $clientId,
-  $baseUrl,
-  $privateKey
-);
+  $accessToken = getMockAccessToken(
+    $clientId,
+    $baseUrl,
+    $privateKey
+  );
 
-$directDebit = new DirectDebit();
+  $response = fetchPaymentNotify(
+    $baseUrl,
+    $clientId,
+    $clientSecret,
+    $accessToken
+  );
 
-$response = $directDebit->paymentNotify(
-  $baseUrl,
-  $clientId,
-  $clientSecret,
-  $accessToken
-);
-
-echo $response;
+  echo $response;
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}

@@ -1,57 +1,53 @@
 <?php
 
-
-require __DIR__ . '/../vendor/autoload.php';
-
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\Util\GetAccessToken;
-use BRI\DirectDebit\DirectDebit;
-
-$clientId = $_ENV['CONSUMER_KEY']; // customer key
-$clientSecret = $_ENV['CONSUMER_SECRET']; // customer secret
-$pKeyId = $_ENV['PRIVATE_KEY']; // private key
+require 'utils.php';
 
 // url path values
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
-// change variables accordingly
-$partnerId = ''; //partner id
-$channelId = ''; // channel id
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$getAccessToken = new GetAccessToken();
+  list($accessToken, $timestamp) = getAccessToken(
+    $clientId,
+    $privateKey,
+    $baseUrl
+  );
 
-[$accessToken, $timestamp] = $getAccessToken->get(
-  $clientId,
-  $pKeyId,
-  $baseUrl
-);
+  // change variables accordingly
+  $partnerId = ''; //partner id
+  $channelId = ''; // channel id
 
-$directDebit = new DirectDebit();
+  $originalPartnerReferenceNo = '';
+  $originalReferenceNo = '';
+  $serviceCode = '';
+  
+  $validateInputs = sanitizeInput([
+    'partnerId' => $partnerId,
+    'channelId' => $channelId,
+    'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
+    'originalReferenceNo' => $originalReferenceNo,
+    'serviceCode' => $serviceCode
+  ]);
 
-$originalPartnerReferenceNo = '';
-$originalReferenceNo = '';
-$serviceCode = '';
+  $body = [
+    'originalPartnerReferenceNo' => $validateInputs['originalPartnerReferenceNo'],
+    'originalReferenceNo' => $validateInputs['originalReferenceNo'],
+    'serviceCode' => $validateInputs['serviceCode']
+  ];
 
-$body = [
-  'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
-  'originalReferenceNo' => $originalReferenceNo,
-  'serviceCode' => $serviceCode
-];
+  $response = paymentStatus(
+    $clientSecret, 
+    $partnerId,
+    $baseUrl,
+    $accessToken, 
+    $channelId,
+    $timestamp,
+    $body
+  );
 
-
-$response = $directDebit->paymentStatus(
-  $clientSecret, 
-  $partnerId,
-  $baseUrl,
-  $accessToken, 
-  $channelId,
-  $timestamp,
-  $body
-);
-
-echo $response;
-
-
+  echo $response;
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}

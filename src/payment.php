@@ -1,86 +1,100 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require 'utils.php';
 
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\Util\GetAccessToken;
-use BRI\DirectDebit\DirectDebit;
 use BRI\Util\GenerateRandomString;
-
-$clientId = $_ENV['CONSUMER_KEY']; // customer key
-$clientSecret = $_ENV['CONSUMER_SECRET']; // customer secret
-$pKeyId = $_ENV['PRIVATE_KEY']; // private key
 
 // url path values
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
-// change variables accordingly
-$partnerId = ''; //partner id
-$channelId = ''; // channel id
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$getAccessToken = new GetAccessToken();
+  list($accessToken, $timestamp) = getAccessToken(
+    $clientId,
+    $privateKey,
+    $baseUrl
+  );
 
-[$accessToken, $timestamp] = $getAccessToken->get(
-  $clientId,
-  $pKeyId,
-  $baseUrl
-);
+  // change variables accordingly
+  $partnerId = ''; //partner id
+  $channelId = ''; // channel id
 
-$directDebit = new DirectDebit();
+  $partnerReferenceNo = (new GenerateRandomString())->generate(12);
+  $url = '';
+  $type = ''; // PAY_RETURN/PAY_NOTIFY
+  $isDeepLink = ''; // Y/N
+  $value = '';
+  $currency = '';
+  $chargeToken = '';
+  $bankCardToken = '';
+  $otpStatus = '';
+  $settlementAccount = (new GenerateRandomString())->generate(10);//'020601000109305';
+  $merchantTrxId = (new GenerateRandomString())->generate(10); //'0206010001';
+  $remarks = '';
 
-$partnerReferenceNo = (new GenerateRandomString())->generate(12);
-$url = '';
-$type = ''; // PAY_RETURN/PAY_NOTIFY
-$isDeepLink = 'N'; // Y/N
-$value = '';
-$currency = '';
-$chargeToken = '';
-$bankCardToken = '';
-$otpStatus = '';
-$settlementAccount = (new GenerateRandomString())->generate(15); // '020601000109305';
-$merchantTrxId = (new GenerateRandomString())->generate(10); //'0206010001';
-$remarks = '';
-
-file_put_contents('partnerReferenceNo.txt', $partnerReferenceNo);
-
-$body = [
-  'partnerReferenceNo' => $partnerReferenceNo,
-  'urlParam' => [
-    (object) [
-      'url' => $url,
-      'type' => $type,
-      'isDeepLink' => $isDeepLink
-    ]
-  ],
-  'amount' => (object) [
+  $validateInputs = sanitizeInput([
+    'partnerId' => $partnerId,
+    'channelId' => $channelId,
+    'partnerReferenceNo' => $partnerReferenceNo,
+    'url' => $url,
+    'type' => $type,
+    'isDeepLink' => $isDeepLink,
     'value' => $value,
     'currency' => $currency,
-  ],
-  'chargeToken' => $chargeToken,
-  'bankCardToken' => $bankCardToken,
-  'additionalInfo' => (object) [
+    'chargeToken' => $chargeToken,
+    'bankCardToken' => $bankCardToken,
     'otpStatus' => $otpStatus,
     'settlementAccount' => $settlementAccount,
     'merchantTrxId' => $merchantTrxId,
     'remarks' => $remarks
-  ]
-];
+  ]);
 
-$response = $directDebit->payment(
-  $clientSecret,
-  $partnerId,
-  $baseUrl,
-  $accessToken,
-  $channelId,
-  $timestamp,
-  $body
-);
+  file_put_contents('partnerReferenceNo.txt', $validateInputs['partnerReferenceNo']);
 
-echo $response;
+  $body = [
+    'partnerReferenceNo' => $validateInputs['partnerReferenceNo'],
+    'urlParam' => [
+      (object) [
+        'url' => $validateInputs['url'],
+        'type' => $validateInputs['type'],
+        'isDeepLink' => $validateInputs['isDeepLink']
+      ]
+    ],
+    'amount' => (object) [
+      'value' => $validateInputs['value'],
+      'currency' => $validateInputs['currency'],
+    ],
+    'chargeToken' => $validateInputs['chargeToken'],
+    'bankCardToken' => $validateInputs['bankCardToken'],
+    'additionalInfo' => (object) [
+      'otpStatus' => $validateInputs['otpStatus'],
+      'settlementAccount' => $validateInputs['settlementAccount'],
+      'merchantTrxId' => $validateInputs['merchantTrxId'],
+      'remarks' => $validateInputs['remarks']
+    ]
+  ];
 
-$jsonPost = json_decode($response, true);
+  $response = fetchPayment(
+    $clientSecret,
+    $partnerId,
+    $baseUrl,
+    $accessToken,
+    $channelId,
+    $timestamp,
+    $body
+  );
 
-file_put_contents('referenceNo.txt', $jsonPost['referenceNo']);
+  echo $response;
+
+  $jsonPost = json_decode($response, true);
+
+  if (empty($jsonPost['referenceNo'])) {
+    return;
+  }
+
+  file_put_contents('referenceNo.txt', $jsonPost['referenceNo']);
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}
