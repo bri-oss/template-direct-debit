@@ -90,7 +90,7 @@ try {
   $jsonPost = json_decode($response, true);
 
   if (empty($jsonPost['referenceNo'])) {
-    return;
+    throw new Exception("referenceNo not found");
   }
 
   file_put_contents('referenceNo.txt', $jsonPost['referenceNo']);

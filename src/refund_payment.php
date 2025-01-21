@@ -16,7 +16,6 @@ try {
 
   if (!file_exists('partnerReferenceNo.txt') || !file_exists('referenceNo.txt')) {
     throw new Exception("Please payment direct debit first");
-    return;
   }
 
   // change variables accordingly
