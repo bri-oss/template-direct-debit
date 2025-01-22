@@ -7,6 +7,8 @@ require __DIR__ . '/../../briapi-sdk/autoload.php';
 
 use BRI\Util\GetAccessToken;
 use BRI\DirectDebit\DirectDebit;
+use BRI\Util\ExecuteCurlRequest;
+use BRI\Util\PrepareRequest;
 
 function getCredentials(): array {
   $clientId = $_ENV['CONSUMER_KEY'] ?? null; // customer key
@@ -75,7 +77,13 @@ function fetchPaymentNotify(
   string $clientSecret,
   string $accessToken
 ): string {
-  $directDebit = new DirectDebit();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $directDebit = new DirectDebit(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $directDebit->paymentNotify(
     $baseUrl,
@@ -93,7 +101,13 @@ function fetchRefundNotify(
   string $clientSecret,
   string $accessToken
 ): string {
-  $directDebit = new DirectDebit();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $directDebit = new DirectDebit(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $directDebit->refundNotify(
     $baseUrl,
@@ -114,7 +128,13 @@ function fetchPayment(
   string $timestamp,
   array $body
 ): string {
-  $directDebit = new DirectDebit();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $directDebit = new DirectDebit(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $directDebit->payment(
     $clientSecret,
@@ -138,7 +158,13 @@ function paymentStatus(
   string $timestamp,
   array $body
 ): string {
-  $directDebit = new DirectDebit();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $directDebit = new DirectDebit(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $directDebit->paymentStatus(
     $clientSecret, 
@@ -162,7 +188,13 @@ function fetchRefundPayment(
   string $timestamp,
   array $body
 ): string {
-  $directDebit = new DirectDebit();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $directDebit = new DirectDebit(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $directDebit->refundPayment(
     $clientSecret, 
