@@ -28,7 +28,7 @@ try {
   $partnerId = ''; //partner id
   $channelId = ''; // channel id
 
-  $partnerReferenceNo = (new GenerateRandomString())->generate(12);
+  $partnerReferenceNo = '';//(new GenerateRandomString())->generate(12);
   $url = '';
   $type = ''; // PAY_RETURN/PAY_NOTIFY
   $isDeepLink = ''; // Y/N
@@ -99,7 +99,7 @@ try {
     $body
   );
 
-  echo htmlspecialchars($response, ENT_QUOTES, 'UTF-8');
+  echo $response;
 
   $jsonPost = json_decode($response, true);
 

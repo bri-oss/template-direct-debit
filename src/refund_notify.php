@@ -7,7 +7,7 @@ header("Content-Security-Policy: default-src 'self'; script-src 'self';");
 header("X-Content-Type-Options: nosniff");
 
 // url path values
-$baseUrl = 'https://api.bridex.qore.page/mock'; //base url
+$baseUrl = 'https://api.briapidevstudio.dev.bbri.io/mock'; //base url
 
 try {
   if (!str_starts_with($baseUrl, 'https://')) {
@@ -29,7 +29,7 @@ try {
     $accessToken
   );
 
-  echo htmlspecialchars($response, ENT_QUOTES, 'UTF-8');
+  echo $response;
 } catch (InvalidArgumentException $e) {
   // Handle specific exception
   error_log("Invalid argument: " . $e->getMessage());
