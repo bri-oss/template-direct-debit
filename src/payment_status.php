@@ -34,13 +34,12 @@ try {
     'partnerId' => $partnerId,
     'channelId' => $channelId,
     'originalPartnerReferenceNo' => $originalPartnerReferenceNo,
-    'originalReferenceNo' => $originalReferenceNo,
     'serviceCode' => $serviceCode
   ]);
 
   $body = [
     'originalPartnerReferenceNo' => $validateInputs['originalPartnerReferenceNo'],
-    'originalReferenceNo' => $validateInputs['originalReferenceNo'],
+    'originalReferenceNo' => $originalReferenceNo,
     'serviceCode' => $validateInputs['serviceCode']
   ];
 

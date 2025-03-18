@@ -2,7 +2,7 @@
 
 require 'utils.php';
 
-use BRI\Util\GenerateRandomString;
+use BRI\Util\VarNumber;
 
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 header("Content-Security-Policy: default-src 'self'; script-src 'self';");
@@ -28,7 +28,7 @@ try {
   $partnerId = ''; //partner id
   $channelId = ''; // channel id
 
-  $partnerReferenceNo = '';//(new GenerateRandomString())->generate(12);
+  $partnerReferenceNo = (new VarNumber())->generateVar(7);
   $url = '';
   $type = ''; // PAY_RETURN/PAY_NOTIFY
   $isDeepLink = ''; // Y/N
@@ -37,8 +37,8 @@ try {
   $chargeToken = '';
   $bankCardToken = '';
   $otpStatus = '';
-  $settlementAccount = (new GenerateRandomString())->generate(10);//'020601000109305';
-  $merchantTrxId = (new GenerateRandomString())->generate(10); //'0206010001';
+  $settlementAccount = ''; //(new GenerateRandomString())->generate(10);//'020601000109305';
+  $merchantTrxId = '';//(new GenerateRandomString())->generate(10); //'0206010001';
   $remarks = '';
 
   if (!preg_match('/^[a-zA-Z0-9]+$/', $partnerReferenceNo)) {
@@ -62,7 +62,6 @@ try {
     'bankCardToken' => $bankCardToken,
     'otpStatus' => $otpStatus,
     'settlementAccount' => $settlementAccount,
-    'merchantTrxId' => $merchantTrxId,
     'remarks' => strip_tags($remarks)
   ]);
 
@@ -84,7 +83,7 @@ try {
     'additionalInfo' => (object) [
       'otpStatus' => $validateInputs['otpStatus'],
       'settlementAccount' => $validateInputs['settlementAccount'],
-      'merchantTrxId' => $validateInputs['merchantTrxId'],
+      'merchantTrxId' => $merchantTrxId,
       'remarks' => $validateInputs['remarks']
     ]
   ];
@@ -107,15 +106,20 @@ try {
     throw new Exception("referenceNo not found");
   }
 
-  file_put_contents('referenceNo.txt', htmlspecialchars($validateInputs['partnerReferenceNo'], ENT_QUOTES, 'UTF-8'), LOCK_EX);
+  if (empty($jsonPost['partnerReferenceNo'])) {
+    throw new Exception("partnerReferenceNo not found");
+  }
+
+  file_put_contents('referenceNo.txt', htmlspecialchars($jsonPost['referenceNo'], ENT_QUOTES, 'UTF-8'), LOCK_EX);
+  file_put_contents('partnerReferenceNo.txt', htmlspecialchars($jsonPost['partnerReferenceNo'], ENT_QUOTES, 'UTF-8'), LOCK_EX);
 } catch (InvalidArgumentException $e) {
   // Handle specific exception
-  error_log("Invalid argument: " . $e->getMessage());
+  error_log("\nInvalid argument: " . $e->getMessage());
 } catch (RuntimeException $e) {
   // Handle runtime exception
-  error_log("Runtime exception: " . $e->getMessage());
+  error_log("\nRuntime exception: " . $e->getMessage());
 } catch (Exception $e) {
   // Fallback for unexpected exceptions
-  error_log("Generic exception: " . $e->getMessage());
+  error_log("\nGeneric exception: " . $e->getMessage());
   exit(1);
 }

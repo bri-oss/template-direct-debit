@@ -7,7 +7,7 @@ header("Content-Security-Policy: default-src 'self'; script-src 'self';");
 header("X-Content-Type-Options: nosniff");
 
 // url path values
-$baseUrl = 'https://api.briapidevstudio.dev.bbri.io/mock'; //base url
+$baseUrl = 'https://sandbox.partner.api.bri.co.id';
 
 try {
   if (!str_starts_with($baseUrl, 'https://')) {
@@ -29,9 +29,10 @@ try {
   // change variables accordingly
   $partnerId = ''; //partner id
   $channelId = ''; // channel id
-  $originalPartnerReferenceNo = ''; //trim(file_get_contents('partnerReferenceNo.txt'));
-  $originalReferenceNo = ''; //trim(file_get_contents('referenceNo.txt'));
-  $partnerRefundNo = '';//trim(file_get_contents('partnerReferenceNo.txt'));
+
+  $originalPartnerReferenceNo = trim(file_get_contents('partnerReferenceNo.txt'));
+  $originalReferenceNo = trim(file_get_contents('referenceNo.txt'));
+  $partnerRefundNo = trim(file_get_contents('partnerReferenceNo.txt'));
   $value = '';
   $currency = '';
   $reason = '';
