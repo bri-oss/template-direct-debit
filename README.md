@@ -82,16 +82,12 @@ module:
 
 ### Payment Notify
 ```bash
-1. fill variable $clientId, eg: 'your_client_id'
-2. fill variable $clientSecret, eg: 'S7zgRMA0rUMf4ddkagpreoECgYEAxRkh'
-3. run command `php src/payment_notify.php serve`
+1. run command `php src/payment_notify.php serve`
 ```
 
 ### Refund Notify
 ```bash
-1. fill variable $clientId, eg: 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un'
-2. fill variable $clientSecret, eg: 'super_secret'
-3. run command `php src/refund_notify.php serve`
+1. run command `php src/refund_notify.php serve`
 ```
 
 ## How to get CONSUMER_KEY and CONSUMER_SECRET
