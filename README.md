@@ -30,27 +30,28 @@ module:
 ### How to Setup Project
 
 ```bash
-1. copy .env file by typing 'cp .env.example .env' in the terminal
-2. fill the .env file with the required values
-3. run composer install to install all dependencies
+1. run command `cd template-direct-debit` to change directory
+2. copy .env file by typing 'cp .env.example .env' in the terminal
+3. fill the .env file with the required values
+4. run composer install to install all dependencies
 ```
 
 ### Payment
 ```bash
 1. fill partnerId, eg: 'cM8GIPvoEpzLaHQfvL1e9g'
 2. fill channelId, eg: '12345'
-3. fill partnerReferenceNo is Transaction identification on service provider system example '426306015178'
+3. fill partnerReferenceNo is Transaction identification on service provider system (must unique) example '426306015178', you can generate with (new GenerateRandomString())->generate(10)
 4. fill url is URL for callback, example 'https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation'
-5. fill type, type is URL Type PAY_RETURN/PAY_NOTIFY
-6. fill isDeepLink, to define is url deep link or not with Y/N
-7. fill value, Transaction amount that will be paid using this payment method If it’s IDR then value. includes 2 decimal digits. e.g. IDR 10.000,- will be placed with 10000.00
+5. fill type, type is URL Type PAY_RETURN/PAY_NOTIFY, eg: PAY_NOTIFY
+6. fill isDeepLink, to define is url deep link or not with Y/N, eg: N
+7. fill value, Transaction amount that will be paid using this payment method If it’s IDR then value. includes 2 decimal digits. e.g. IDR 10.000,- will be placed with '100000.00'
 8. fill currency eg: IDR
 9. fill chargeToken, chargeToken string code for verification OTP can filled by 'null'
-10. fill bankCardToken, eg: 'card_.eyJpYXQiOjE3MDgwNTAzNTYsImlzcyI6IkJhbmsgQlJJIC0gRENFIiwianRpIjoiNmY2MmE4ZjUtMGUwMS00NjFjLWJlZmQtYjk3ZWE5YjNmMmIwIiwicGFydG5lcklkIjoi77-9Iiwic2VydmljZU5hbWUiOiJERF9FWFRFUk5BTF9TRVJWSUNFIn0.HR4P9PecyfCZLJ-ibeuxuuWtHzWHrzgunjxiEQJZEjZHO2fQqrMgaO8IUnmACtNJilGOpIQAc7Jsa5W_tCF4KmIpC5jB-tDw40tpqImZ9Famt_hzgacrDcByw2jT9UAPMH444kGAQa7z44PV6jcHdQoaIAfiOkChHw-b11Vg4LyETbsEExvOcL2hKomG_JXpDq5bYmuHcJ2SJ8lRnGomi-7oz_dyM0_wUe1fmE6UyLnvEFz6o6q8nXtm_3g29cLP_4uw5BT54DuSXrRdmw4J7PK3zl2qUnM7CBpYVRLr74iCx9SLGYIMMROE7aGe_DkNfK-dnLKgcvIaN0q-rnLbhg'
-11. fill otpStatus fill wit YES/NO, this is optional
+10. fill bankCardToken, eg: 'card_.eyJpYXQiOjE3NDIxNzg0MzAsImlzcyI6IkJhbmsgQlJJIC0gRENFIiwianRpIjoiZDQ2ZGE4NzItNGMzYS00YmY5LWE2YmYtODdkMjc1NmU2ZWNjIiwicGFydG5lcklkIjoi77-9Iiwic2VydmljZU5hbWUiOiJERF9FWFRFUk5BTF9TRVJWSUNFIn0.gE2DDGZQXYd8IuPvMUiHK5yLvbkkSTAgZMtO2wBeiCF6uUGenX8qp_Csy_ov8UqHvE7zS_I0KCitbs1GS9afd2pIlQ-vxIJ1uCkBe68ledpr2M7rs-ptW6JwKD5pSzocCwOtqGPguDYIbpx6etel-OTQU8NEzmXiePYJDFL5o6phmtu1nIXVfim-zRFyu9uanzL_653GCuifJvQQDb7NSxr4vOeQZ4m8MyXxyxqnWxTLXc_Nkqgdv76JhcDSJK62YMxgTX0Y-kfra01-PcH15gXZDYC8bxqTCX7WGJExf6XWy9VX8MfFZB8-bGRgPqjVWe_VW1ZOO9cPySbBhX9aDA'
+11. fill otpStatus fill wit YES/NO, this is optional, eg: NO
 12. fill settlementAccount, eg: 020601000109305, this is optional
-13. fill merchantTrxId, eg: '0206010001', this is optional
-14. fill remarks, eg: 'test'
+13. fill merchantTrxId, eg: '', because this is optional, you can generate with (new GenerateRandomString())->generate(10)
+14. fill remarks, eg: 'test remark 1'
 11. run command `php src/payment.php serve`
 ```
 
@@ -58,8 +59,8 @@ module:
 ```bash
 1. fill partnerId, eg: 'cM8GIPvoEpzLaHQfvL1e9g'
 2. fill channelId, eg: '12345'
-3. fill originalPartnerReferenceNo is Original transaction identifier on service consumer system, eg: '815027979003'
-4. fill originalReferenceNo is Original transaction identifier on service provider system, eg: '574929794216'
+3. fill originalPartnerReferenceNo is Original transaction identifier on service consumer system, eg: '3356335223'
+4. fill originalReferenceNo is Original transaction identifier on service provider system, eg: ''
 5. fill serviceCode is Transaction type indicator (service code of the original transaction request), eg: '54'
 6. run command `php src/payment_status.php serve`
 ```
@@ -67,13 +68,13 @@ module:
 ### Refund Payment
 ```bash
 1. fill partnerId, eg: 'cM8GIPvoEpzLaHQfvL1e9g'
-2. fill channelId, eg: '12345'
-3. fill originalPartnerReferenceNo, eg: '815027979003'
-4. fill originalReferenceNo, eg: '574929794216'
-5. fill partnerRefundNo, eg: '341406425579'
+2. fill channelId, eg: 'drbt'
+3. fill originalPartnerReferenceNo, eg: '815027979003', must unique, you can use from payment with trim(file_get_contents('partnerReferenceNo.txt'))
+4. fill originalReferenceNo, eg: '574929794216', you can use from payment with trim(file_get_contents('referenceNo.txt'));
+5. fill partnerRefundNo, eg: '341406425579', you can use from payment with trim(file_get_contents('partnerReferenceNo.txt'));
 6. fill value, eg: '10000.00'
 7. fill currency, eg: 'IDR'
-8. fill reason, eg: 'testing coba'
+8. fill reason, eg: 'Customer complain'
 9. fill callbackUrl, eg: 'https://5fdc5f1948321c00170119e0.mockapi.io/api/v1/simulation/simulation'
 10. fill settlementAccount, eg: '020601000109305'
 11. run command `php src/refund_payment.php serve`
@@ -81,8 +82,8 @@ module:
 
 ### Payment Notify
 ```bash
-1. fill variable $clientId, eg: 'YOWoKgXf5KcATtetyq7NbfxOz6FR65Un'
-2. fill variable $clientSecret, eg: 'super_secret'
+1. fill variable $clientId, eg: 'your_client_id'
+2. fill variable $clientSecret, eg: 'S7zgRMA0rUMf4ddkagpreoECgYEAxRkh'
 3. run command `php src/payment_notify.php serve`
 ```
 
