@@ -2,7 +2,7 @@
 
 require 'utils.php';
 
-use BRI\Util\VarNumber;
+use BRI\Util\GenerateRandomString;
 
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 header("Content-Security-Policy: default-src 'self'; script-src 'self';");
@@ -28,7 +28,7 @@ try {
   $partnerId = ''; //partner id
   $channelId = ''; // channel id
 
-  $partnerReferenceNo = (new VarNumber())->generateVar(7);
+  $partnerReferenceNo = (new GenerateRandomString())->generate(10);
   $url = '';
   $type = ''; // PAY_RETURN/PAY_NOTIFY
   $isDeepLink = ''; // Y/N
